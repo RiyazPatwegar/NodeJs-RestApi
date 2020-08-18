@@ -12,6 +12,11 @@ exports.signUp = (req, res, next) => {
         //return res.json({'statusCode':401, 'message':'Validation failed', 'data': error.array()});
     }
 
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    
+
     res.json({
         'statusCode': 200,
         'message': 'User signup successfully'

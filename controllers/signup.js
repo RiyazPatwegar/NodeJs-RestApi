@@ -79,7 +79,7 @@ exports.login = (req, res, next) => {
                         if(isEqual){
                             res.status(200).json({statusCode: 200, message: 'Login successfull, Welcome user '+row[0][0].name});
                         }else{
-                            console.log(err);                
+                            
                             const error = new Error("Login failed, Password doesn't matched!");
                             error.statusCode = 400;
                             error.data = [{location: [{controller:'signup', method: 'login'}]}];

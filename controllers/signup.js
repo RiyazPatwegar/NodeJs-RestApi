@@ -74,16 +74,24 @@ exports.login = (req, res, next) => {
                     res.status(400).json({statusCode: 400, message: 'Login failed, No user found!'});
                 }else{
                     
-                    const check = bcrypt.compare(password, row[0][0].password)
-                    if(check){
-                        res.status(200).json({statusCode: 200, message: 'Login successfull, Welcome user '+row[0][0].name});
-                    }else{
+                    bcrypt.compare(password, row[0][0].password).then((isEqual) => {
+                        console.log(isEqual);
+                        if(isEqual){
+                            res.status(200).json({statusCode: 200, message: 'Login successfull, Welcome user '+row[0][0].name});
+                        }else{
+                            console.log(err);                
+                            const error = new Error("Login failed, Password doesn't matched!");
+                            error.statusCode = 400;
+                            error.data = [{location: [{controller:'signup', method: 'login'}]}];
+                            next(error);            
+                        }
+                    }).catch((err)=>{
                         console.log(err);                
                         const error = new Error("Login failed, Password doesn't matched!");
                         error.statusCode = 400;
                         error.data = [{location: [{controller:'signup', method: 'login'}]}];
-                        next(error);            
-                    }
+                        next(error);
+                    });                                        
                 }                
             }).            
         catch((err) => {

@@ -32,4 +32,15 @@ router.post('/signup',[
         })
 ],singupController.signUp);
 
+router.post('/login', [
+    body('email').
+        trim().not().isEmpty().
+        isEmail().
+        escape().
+        isLength({min: 5}, {max: 30}),
+    body('password').
+        trim().not().isEmpty().
+        isLength({min:4, max:15})
+], singupController.login);
+
 module.exports = router;
